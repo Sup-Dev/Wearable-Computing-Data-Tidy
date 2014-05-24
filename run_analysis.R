@@ -28,3 +28,11 @@ train <- cbind(subject_train, y_train, subset(x_train, select=mean_std_names))
 ## Merge test and train
 mergeData <- rbind(test, train)
 
+## Generate tidy data
+tidyData <- aggregate(mergeData[,3:ncol(mergeData)], list(Subject=mergeData$subjects, Activity=mergeData$labels), mean)
+tidyData <- tidyData[order(tidyData$Subject),]
+
+tidyData$Activity <- activity_labels[tidyData$Activity,]
+
+write.table(tidyData, file="./tidyData.txt", sep="\t", row.names=FALSE)
+
